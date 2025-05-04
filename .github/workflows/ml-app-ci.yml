@@ -10,8 +10,8 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: europe-west2
   REPO_NAME: finden
-  IMAGE_NAME: py_drive_connector
-  IMAGE: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/finden/py_drive_connector
+  IMAGE_NAME: ml-app
+  IMAGE: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/finden/ml-app
 
 jobs:
   build-and-test:
