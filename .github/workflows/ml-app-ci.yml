@@ -8,11 +8,15 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  IMAGE: gcr.io/${{ secrets.GCP_PROJECT_ID }}/ml-api
+  REGION: europe-west2
+  REPO_NAME: finden
+  IMAGE_NAME: py_drive_connector
+  IMAGE: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/finden/py_drive_connector
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,26 +26,27 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
         with:
-          version: '400.0.0'
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-      - name: Authenticate with Google Cloud
-        env:
-          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
-        run: |
-          echo "$GCP_CREDENTIALS" > $HOME/gcloud-key.json
-          gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
-          # Set the environment variable for ADC
-          echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud-key.json" >> $GITHUB_ENV  
+      - name: Set Application Default Credentials for GCP SDK
+        run: echo "GOOGLE_APPLICATION_CREDENTIALS=${{ github.workspace }}/gcloud.json" >> $GITHUB_ENV
 
-      - name: Install dependencies
+      - name: Write credentials to file
+        run: echo '${{ secrets.GCP_CREDENTIALS }}' > ${{ github.workspace }}/gcloud.json
+
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          pip install pytest
-          pip install httpx
+          pip install pytest httpx
 
       - name: Set PYTHONPATH for pytest
         run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
@@ -52,16 +57,12 @@ jobs:
       - name: Run integration tests
         run: pytest tests/integration
 
-      - name: Set up Docker
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: '${{ secrets.GCP_SA_KEY }}'
-
-      - name: Configure Docker to use GCR
-        run: gcloud auth configure-docker
+      - name: Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev
 
       - name: Build and push Docker image
         run: |
