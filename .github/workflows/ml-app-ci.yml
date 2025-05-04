@@ -22,6 +22,16 @@ jobs:
         with:
           python-version: 3.9
 
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          version: '400.0.0'
+
+      - name: Authenticate with Google Cloud
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: echo "$GCP_CREDENTIALS" > $HOME/gcloud-key.json && gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json  
+
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
