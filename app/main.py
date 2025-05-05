@@ -40,8 +40,11 @@ def download_model_from_gcs():
     blob.download_to_filename(local_model_path)
     logger.info(f"Downloaded model to {local_model_path}")
 
-download_model_from_gcs()
-pipeline = joblib.load(local_model_path)
+@app.on_event("startup")
+def startup_event():
+    download_model_from_gcs()
+    app.state.pipeline = joblib.load(local_model_path)
+
 
 class IrisInput(BaseModel):
     sepal_length: float
@@ -51,15 +54,12 @@ class IrisInput(BaseModel):
 
 @app.post("/predict")
 def predict(input_data: IrisInput):
-    request_id = str(uuid4())
-    logger.info(f"Request ID: {request_id} | Input: {input_data.dict()}")
-
     features = np.array([[input_data.sepal_length, input_data.sepal_width,
                           input_data.petal_length, input_data.petal_width]])
-    prediction = pipeline.predict(features)[0]
+    prediction = app.state.pipeline.predict(features)[0]
     prediction_label = class_names[int(prediction)]
-
-    # Log and update metrics
+    
+    request_id = str(uuid4())
     logger.info(f"Request ID: {request_id} | Prediction: {prediction_label}")
     prediction_counter.labels(model_version=model_version, prediction_label=prediction_label).inc()
 
