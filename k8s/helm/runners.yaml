@@ -1,0 +1,14 @@
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+ name: k8s-action-runner-ml-app
+ namespace: actions-runner-system
+ annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+spec:
+ replicas: 1
+ template:
+  spec:
+    labels:
+      - self-hosted-linux-ml-app
+    repository: Puvendhan/ml-app
