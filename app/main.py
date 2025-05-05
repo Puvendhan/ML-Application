@@ -61,3 +61,18 @@ def predict(input_data: IrisInput):
         "model_version": model_version
     }
     return response
+
+# Health check route
+@app.get("/health")
+def health_check():
+    # You can add any logic for your health check here
+    return {"status": "healthy"}
+
+# Readiness check route
+@app.get("/ready")
+def readiness_check():
+    # Check if the model is loaded and ready to serve predictions
+    if os.path.exists(local_model_path):
+        return {"status": "ready"}
+    else:
+        return {"status": "not ready"}, 503
