@@ -6,3 +6,4 @@ numpy
 pydantic
 gcsfs
 google-cloud-storage
+prometheus-fastapi-instrumentator
