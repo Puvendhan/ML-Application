@@ -4,7 +4,7 @@ on:
   push:
     paths:
       - 'k8s/**'
-      - '.github/workflows/ml-deploy.yaml'
+      - '.github/workflows/ml-deploy.yml'
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
