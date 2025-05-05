@@ -1,3 +1,5 @@
+name: ml-api
+app: ml-api
 replicaCount: 2
 
 image:

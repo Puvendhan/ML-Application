@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ml-api.fullname" . }}
+  name: {{ .Values.name }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: {{ include "ml-api.name" . }}
+    app: {{ .Values.app }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "ml-api.name" . }}
+      app: {{ .Values.app }}
   template:
     metadata:
       labels:
-        app: {{ include "ml-api.name" . }}
+        app: {{ .Values.app }}
     spec:
       containers:
-        - name: {{ include "ml-api.name" . }}
+        - name: {{ .Values.app }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:

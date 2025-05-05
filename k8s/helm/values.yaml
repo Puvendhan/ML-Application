@@ -1,4 +1,5 @@
 name: ml-api
+app: ml-api
 namespace: ml-app
 replicaCount: 2
 
