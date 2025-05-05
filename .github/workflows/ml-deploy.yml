@@ -55,7 +55,7 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create namespace if not exists
-        run: kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
+        run: kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply --validate=false -f -
 
       - name: Deploy with Helm
         env:
