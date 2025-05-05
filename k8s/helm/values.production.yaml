@@ -1,0 +1,43 @@
+replicaCount: 4
+
+image:
+  repository: europe-west2-docker.pkg.dev/micro-answer-423900-n6/finden/ml-app
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+  requests:
+    cpu: 500m
+    memory: 512Mi
+
+env:
+  MODEL_VERSION: "1.0.0"
+  GCS_BUCKET: "ml-models-iris"
+  GOOGLE_APPLICATION_CREDENTIALS: "/var/secrets/gcp/key.json"
+
+gcpServiceAccountSecret: gcp-sa-key
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8000
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  timeoutSeconds: 2
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: 8000
+  initialDelaySeconds: 5
+  periodSeconds: 10
+  timeoutSeconds: 2
+  failureThreshold: 3

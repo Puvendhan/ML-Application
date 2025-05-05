@@ -1,0 +1,63 @@
+name: MLAPP - Helm Deploy to GKE
+
+on:
+  workflow_run:
+    workflows: ["MLAPP - Build and Deploy"]
+    types:
+      - completed
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  IMAGE_BASE: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/finden/ml-app
+  GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
+  GKE_ZONE: ${{ secrets.GKE_ZONE }}
+  NAMESPACE: ml-app
+  ENV: staging  # Change to 'production' as needed
+
+jobs:
+  deploy:
+    name: Deploy Helm Chart to GKE
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Authenticate with Google Cloud
+        env:
+          GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+          echo "$GCP_CREDENTIALS" > $HOME/gcloud-key.json
+          gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+          echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud-key.json" >> $GITHUB_ENV
+
+      - name: Get GKE credentials
+        run: |
+          gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE" --project "$PROJECT_ID"
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+
+      - name: Read version
+        id: get_version
+        run: |
+          VERSION=$(cat VERSION)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create namespace if not exists
+        run: kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploy with Helm
+        env:
+          VERSION: ${{ steps.get_version.outputs.version }}
+        run: |
+          helm upgrade --install ml-api ./helm \
+            --namespace $NAMESPACE \
+            --set image.repository=$IMAGE_BASE \
+            --set image.tag=$VERSION \
+            --values helm/values.${{ env.ENV }}.yaml \
+            --wait
