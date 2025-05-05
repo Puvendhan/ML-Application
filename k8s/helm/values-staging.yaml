@@ -5,7 +5,7 @@ replicaCount: 2
 image:
   repository: europe-west2-docker.pkg.dev/micro-answer-423900-n6/finden/ml-app
   tag: "1.0.0"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: LoadBalancer
