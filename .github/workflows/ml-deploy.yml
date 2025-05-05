@@ -69,5 +69,5 @@ jobs:
             --namespace $NAMESPACE \
             --set image.repository=$IMAGE_BASE \
             --set image.tag=$VERSION \
-            --values k8s/helm/values.${{ env.ENV }}.yaml \
+            --values k8s/helm/values-${{ env.ENV }}.yaml \
             --wait
