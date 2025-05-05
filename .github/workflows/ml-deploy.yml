@@ -1,10 +1,10 @@
 name: MLAPP - Helm Deploy to GKE
 
 on:
-  workflow_run:
-    workflows: ["MLAPP - Build and Deploy"]
-    types:
-      - completed
+  push:
+    paths:
+      - 'k8s/**'
+      - '.github/workflows/ml-deploy.yaml'
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -12,13 +12,12 @@ env:
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
   NAMESPACE: ml-app
-  ENV: staging  # Change to 'production' as needed
+  ENV: staging  # or 'production'
 
 jobs:
   deploy:
     name: Deploy Helm Chart to GKE
     runs-on: self-hosted-linux-ml-app
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout code
@@ -39,13 +38,17 @@ jobs:
         run: |
           gcloud components install gke-gcloud-auth-plugin
           echo "export USE_GKE_GCLOUD_AUTH_PLUGIN=True" >> $GITHUB_ENV
-  
 
       - name: Get GKE credentials
         run: |
           gcloud container clusters get-credentials "$GKE_CLUSTER" --zone "$GKE_ZONE" --project "$PROJECT_ID"
 
-      - name: Set up Helm
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'latest'
+
+      - name: Install Helm
         uses: azure/setup-helm@v3
 
       - name: Read version
@@ -55,15 +58,16 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Create namespace if not exists
-        run: kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply --validate=false -f -
+        run: |
+          kubectl create namespace $NAMESPACE --dry-run=client -o yaml | kubectl apply --validate=false -f -
 
       - name: Deploy with Helm
         env:
           VERSION: ${{ steps.get_version.outputs.version }}
         run: |
-          helm upgrade --install ml-api ./helm \
+          helm upgrade --install ml-api ./k8s/helm \
             --namespace $NAMESPACE \
             --set image.repository=$IMAGE_BASE \
             --set image.tag=$VERSION \
-            --values helm/values.${{ env.ENV }}.yaml \
+            --values k8s/helm/values.${{ env.ENV }}.yaml \
             --wait
