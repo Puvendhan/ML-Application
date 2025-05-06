@@ -63,6 +63,8 @@ spec:
               cpu: {{ .Values.resources.requests.cpu }}
               memory: {{ .Values.resources.requests.memory }}
       volumes:
+        - name: model-volume
+          emptyDir: {}      
         - name: gcp-sa-key
           secret:
             secretName: {{ .Values.gcpServiceAccountSecret }}
