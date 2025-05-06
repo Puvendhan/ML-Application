@@ -1,6 +1,6 @@
 name: ml-api
 app: ml-api
-replicaCount: 4
+replicaCount: 2
 
 image:
   repository: europe-west2-docker.pkg.dev/micro-answer-423900-n6/finden/ml-app
@@ -8,7 +8,7 @@ image:
   pullPolicy: Always
 
 service:
-  type: LoadBalancer
+  type: ClusterIP
   port: 80
 
 resources:
