@@ -6,8 +6,9 @@ from unittest.mock import Mock
 mock_model = Mock()
 mock_model.predict.return_value = [2]  # maps to "virginica"
 
-# Override dependency
+# Override FastAPI dependency with mock
 app.dependency_overrides[get_model] = lambda: mock_model
+
 client = TestClient(app)
 
 def test_predict_endpoint():
