@@ -16,6 +16,9 @@ COPY app/* .
 # Stage 2: Final image
 FROM python:3.9-slim
 
+# Create non-root user
+RUN useradd -m appuser
+
 WORKDIR /app
 
 # Optional: copy pip cache if you want to reuse it
@@ -31,6 +34,9 @@ RUN pip install --cache-dir=/root/.cache/pip -r requirements.txt
 # Set environment variables
 ENV MODEL_VERSION=1.0.0
 ENV GCS_BUCKET=ml-models-iris
+
+# Use non-root user
+USER appuser
 
 # Expose the port that the app will run on
 EXPOSE 8000

@@ -33,9 +33,8 @@ class_names = ['setosa', 'versicolor', 'virginica']
 @app.on_event("startup")
 def startup_event():
     if os.getenv("ENV") != "test":
-        download_model_from_gcs()
-        app.state.pipeline = joblib.load(local_model_path)
-
+        model_path = f"/models/model_pipeline.joblib"
+        app.state.pipeline = joblib.load(model_path)
 
 class IrisInput(BaseModel):
     sepal_length: float
