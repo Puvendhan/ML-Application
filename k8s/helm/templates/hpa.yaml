@@ -19,11 +19,11 @@ spec:
           value: 100
         - periodSeconds: 15
           type: Pods
-          value: 4
+          value: 3
       selectPolicy: Max
       stabilizationWindowSeconds: 60
   maxReplicas: 3
-  minReplicas: 3
+  minReplicas: 2
   metrics:
     - type: ContainerResource
       containerResource:
