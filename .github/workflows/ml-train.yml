@@ -1,0 +1,38 @@
+name: Train Model
+
+on:
+  workflow_dispatch:  # Allows manual trigger
+  push:
+    paths:
+      - train.py
+      - requirements.txt
+      - VERSION
+
+jobs:
+  train-model:
+    runs-on: self-hosted-linux-ml-app
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.9'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Authenticate with Google Cloud
+      env:
+        GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      run: |
+        echo "$GCP_CREDENTIALS" > $HOME/gcloud-key.json
+        gcloud auth activate-service-account --key-file=$HOME/gcloud-key.json
+        echo "GOOGLE_APPLICATION_CREDENTIALS=$HOME/gcloud-key.json" >> $GITHUB_ENV
+
+    - name: Train and upload model
+      run: python train.py
