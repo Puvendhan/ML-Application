@@ -1,3 +1,5 @@
+import os
+os.environ["ENV"] = "test"
 from fastapi.testclient import TestClient
 from app.main import app, get_model
 from unittest.mock import Mock

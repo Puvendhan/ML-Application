@@ -5,7 +5,6 @@ import joblib
 import numpy as np
 import os
 import logging
-from google.cloud import storage
 from prometheus_fastapi_instrumentator import Instrumentator
 from prometheus_client import Counter
 
