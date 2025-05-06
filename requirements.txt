@@ -4,6 +4,4 @@ scikit-learn
 joblib
 numpy
 pydantic
-gcsfs
-google-cloud-storage
 prometheus-fastapi-instrumentator
