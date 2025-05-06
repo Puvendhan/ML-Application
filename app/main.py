@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from pydantic import BaseModel
 from uuid import uuid4
 import joblib
@@ -30,6 +30,7 @@ gcs_model_path = f"{model_version}/model_pipeline.joblib"
 local_model_path = f"/tmp/model_pipeline_{model_version}.joblib"
 class_names = ['setosa', 'versicolor', 'virginica']
 
+
 def download_model_from_gcs():
     if os.path.exists(local_model_path):
         return
@@ -40,10 +41,12 @@ def download_model_from_gcs():
     blob.download_to_filename(local_model_path)
     logger.info(f"Downloaded model to {local_model_path}")
 
+
 @app.on_event("startup")
 def startup_event():
-    download_model_from_gcs()
-    app.state.pipeline = joblib.load(local_model_path)
+    if os.getenv("ENV") != "test":
+        download_model_from_gcs()
+        app.state.pipeline = joblib.load(local_model_path)
 
 
 class IrisInput(BaseModel):
@@ -52,13 +55,18 @@ class IrisInput(BaseModel):
     petal_length: float
     petal_width: float
 
+
+def get_model():
+    return app.state.pipeline
+
+
 @app.post("/predict")
-def predict(input_data: IrisInput):
+def predict(input_data: IrisInput, model=Depends(get_model)):
     features = np.array([[input_data.sepal_length, input_data.sepal_width,
                           input_data.petal_length, input_data.petal_width]])
-    prediction = app.state.pipeline.predict(features)[0]
+    prediction = model.predict(features)[0]
     prediction_label = class_names[int(prediction)]
-    
+
     request_id = str(uuid4())
     logger.info(f"Request ID: {request_id} | Prediction: {prediction_label}")
     prediction_counter.labels(model_version=model_version, prediction_label=prediction_label).inc()
@@ -70,9 +78,11 @@ def predict(input_data: IrisInput):
         "model_version": model_version
     }
 
+
 @app.get("/health")
 def health_check():
     return {"status": "healthy"}
+
 
 @app.get("/ready")
 def readiness_check():
