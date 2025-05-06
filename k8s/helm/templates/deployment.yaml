@@ -15,6 +15,13 @@ spec:
       labels:
         app: {{ .Values.app }}
     spec:
+      initContainers:
+        - name: download-model
+          image: "google/cloud-sdk:alpine"
+          command: ["/bin/sh", "-c", "gsutil cp gs://{{ .Values.env.GCS_BUCKET }}/{{ .Values.env.MODEL_VERSION }}/model_pipeline.joblib /models/"]
+          volumeMounts:
+            - name: model-volume
+              mountPath: /models
       containers:
         - name: {{ .Values.app }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

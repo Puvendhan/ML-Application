@@ -30,18 +30,6 @@ gcs_model_path = f"{model_version}/model_pipeline.joblib"
 local_model_path = f"/tmp/model_pipeline_{model_version}.joblib"
 class_names = ['setosa', 'versicolor', 'virginica']
 
-
-def download_model_from_gcs():
-    if os.path.exists(local_model_path):
-        return
-    client = storage.Client()
-    bucket = client.bucket(gcs_bucket)
-    blob = bucket.blob(gcs_model_path)
-    os.makedirs(os.path.dirname(local_model_path), exist_ok=True)
-    blob.download_to_filename(local_model_path)
-    logger.info(f"Downloaded model to {local_model_path}")
-
-
 @app.on_event("startup")
 def startup_event():
     if os.getenv("ENV") != "test":
