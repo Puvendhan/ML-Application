@@ -3,10 +3,19 @@ name: Ml App - Train Model
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - train.py
       - requirements.txt
       - VERSION
+      - '.github/workflows/ml-train.yml'
+  pull_request:
+    paths:
+        - train.py
+        - requirements.txt
+        - VERSION
+        - '.github/workflows/ml-train.yml'        
 
 jobs:
   train-model:

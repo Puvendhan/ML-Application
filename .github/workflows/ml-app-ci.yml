@@ -10,7 +10,7 @@ on:
       - 'Dockerfile'
       - 'requirements.txt'
       - 'VERSION'
-      - '.github/workflows/ml-app-ci.yaml'
+      - '.github/workflows/ml-app-ci.yml'
   pull_request:
     paths:
       - 'app/**'
@@ -18,7 +18,7 @@ on:
       - 'Dockerfile'
       - 'requirements.txt'
       - 'VERSION'
-      - '.github/workflows/ml-app-ci.yaml'
+      - '.github/workflows/ml-app-ci.yml'
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
