@@ -1,23 +1,26 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: ml-api-ingress
+  name: ml-app-ingress
+  namespace: ml-app
   annotations:
-    kubernetes.io/ingress.class: "nginx"
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/wallarm-mode: "monitoring"
+    nginx.ingress.kubernetes.io/wallarm-application: "14"
 spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - ml-app.myapp.com
+      secretName: ml-app-tls
   rules:
-    - host: ml-api.yourdomain.com
+    - host: ml-app.myapp.com
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: ml-api-service
+                name: ml-app-service
                 port:
-                  number: 80
-  tls:
-    - hosts:
-        - ml-api.yourdomain.com
-      secretName: ml-api-tls
+                  number: 8000
