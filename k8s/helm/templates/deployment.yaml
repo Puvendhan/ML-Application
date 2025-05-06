@@ -15,6 +15,10 @@ spec:
       labels:
         app: {{ .Values.app }}
     spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
       initContainers:
         - name: download-model
           image: "google/cloud-sdk:alpine"
