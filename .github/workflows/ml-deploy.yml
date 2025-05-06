@@ -71,4 +71,3 @@ jobs:
             --set image.tag=$VERSION \
             --values k8s/helm/values-${{ env.ENV }}.yaml \
             --wait
-            
