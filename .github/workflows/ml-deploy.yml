@@ -1,4 +1,4 @@
-name: MLAPP - Helm Deploy to GKE
+name: Ml App - Helm Deploy to GKE
 
 on:
   push:
@@ -16,7 +16,7 @@ env:
 
 jobs:
   deploy:
-    name: Deploy Helm Chart to GKE
+    name: Deploy to GKE
     runs-on: self-hosted-linux-ml-app
 
     steps:

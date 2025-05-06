@@ -1,7 +1,7 @@
-name: Train Model
+name: Ml App - Train Model
 
 on:
-  workflow_dispatch:  # Allows manual trigger
+  workflow_dispatch:
   push:
     paths:
       - train.py

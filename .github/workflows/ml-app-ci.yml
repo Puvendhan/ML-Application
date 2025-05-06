@@ -1,4 +1,4 @@
-name: MLAPP - Build
+name: Ml App - Build
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
       - main
     paths:
       - 'app/**'
-      - 'artifacts/**'
       - 'tests/**'
       - 'Dockerfile'
       - 'requirements.txt'
@@ -15,7 +14,6 @@ on:
   pull_request:
     paths:
       - 'app/**'
-      - 'artifacts/**'
       - 'tests/**'
       - 'Dockerfile'
       - 'requirements.txt'
@@ -27,8 +25,8 @@ env:
   IMAGE_BASE: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/finden/ml-app
 
 jobs:
-  build-test-deploy:
-    runs-on: ubuntu-latest
+  build-test:
+    runs-on: self-hosted-linux-ml-app
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
