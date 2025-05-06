@@ -1,4 +1,4 @@
-name: MLAPP - Build and Deploy
+name: MLAPP - Build
 
 on:
   push:
