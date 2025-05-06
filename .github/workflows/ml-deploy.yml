@@ -18,7 +18,7 @@ env:
   GKE_CLUSTER: ${{ secrets.GKE_CLUSTER_NAME }}
   GKE_ZONE: ${{ secrets.GKE_ZONE }}
   NAMESPACE: ml-app
-  ENV: staging  # or 'production'
+  ENV: Staging  # or 'Production'
 
 jobs:
   deploy:
@@ -75,5 +75,5 @@ jobs:
             --namespace $NAMESPACE \
             --set image.repository=$IMAGE_BASE \
             --set image.tag=$VERSION \
-            --values k8s/helm/values-${{ env.ENV }}.yaml \
+            --values k8s/helm/values${{ env.ENV }}.yaml \
             --wait
