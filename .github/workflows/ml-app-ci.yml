@@ -10,7 +10,6 @@ on:
       - 'tests/**'
       - 'Dockerfile'
       - 'requirements.txt'
-      - 'train.py'
       - 'VERSION'
       - '.github/workflows/ml-app-ci.yaml'
   pull_request:
@@ -20,10 +19,9 @@ on:
       - 'tests/**'
       - 'Dockerfile'
       - 'requirements.txt'
-      - 'train.py'
       - 'VERSION'
       - '.github/workflows/ml-app-ci.yaml'
-      
+
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   IMAGE_BASE: europe-west2-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/finden/ml-app
