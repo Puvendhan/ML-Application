@@ -11,6 +11,7 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 
 ## 📁 Project Structure
 
+```bash
 ❯ tree
 .
 ├── app
@@ -38,7 +39,7 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 │       └── test_api.py
 ├── train.py
 └── VERSION
-
+```
 ---
 
 ## 1️⃣ How to Run the Training Pipeline
