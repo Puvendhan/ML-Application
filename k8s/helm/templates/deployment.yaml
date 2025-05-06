@@ -46,6 +46,8 @@ spec:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: "{{ .Values.env.GOOGLE_APPLICATION_CREDENTIALS }}"
           volumeMounts:
+            - name: model-volume
+              mountPath: /models          
             - name: gcp-sa-key
               mountPath: /var/secrets/gcp
               readOnly: true
