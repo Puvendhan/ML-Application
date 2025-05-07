@@ -61,6 +61,8 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 
 - Self hosted github action runners been deployed into GKE cluster
 
+## ✅ CI/CD is fully automated from code commit to live deployment.
+
 ```bash
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
@@ -84,7 +86,6 @@ Snippet
 
 ![alt text](image-6.png)
 
-✅ CI/CD is fully automated from code commit to live deployment.
 
 Snippet
 
