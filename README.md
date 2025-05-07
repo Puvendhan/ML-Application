@@ -52,14 +52,37 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 - Serialises the `Pipeline` object with preprocessing + model.
 - Uploads to a remote artifact store (e.g., Google Cloud Storage or GitHub release).
 
-## 2️⃣ How to Build and Run the Inference Microservice
+## 2️⃣ How to Build and Run the Microservice
 
 ### 🔧 CI/CD via GitHub Actions
 - ml-app-ci.yml: Runs tests, builds the Docker image, and pushes to a GCR (google container registry).
 
 - ml-deploy.yml: Deploys Kubernetes manifests (Helm based) of the ml app into your gke cluster.
 
+- Self hosted github action runners been deployed into GKE cluster
 
+```bash
+apiVersion: actions.summerwind.dev/v1alpha1
+kind: RunnerDeployment
+metadata:
+ name: k8s-action-runner-ml-app
+ namespace: actions-runner-system
+ annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+spec:
+ replicas: 1
+ template:
+  spec:
+    labels:
+      - self-hosted-linux-ml-app
+    repository: Puvendhan/ml-app
+```
+
+Snippet
+
+![alt text](image-5.png)
+
+![alt text](image-6.png)
 
 ✅ CI/CD is fully automated from code commit to live deployment.
 
