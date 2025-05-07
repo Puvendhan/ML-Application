@@ -4,11 +4,9 @@ from fastapi.testclient import TestClient
 from app.main import app, get_model
 from unittest.mock import Mock
 
-# Use a dummy model for integration
 mock_model = Mock()
 mock_model.predict.return_value = [2]  # maps to "virginica"
 
-# Override FastAPI dependency with mock
 app.dependency_overrides[get_model] = lambda: mock_model
 
 client = TestClient(app)
