@@ -161,6 +161,7 @@ Pushes logs to Loki using HTTP.
 helm repo add grafana https://grafana.github.io/helm-charts
 helm install --values values.yaml loki grafana/loki
 ```
+### Traces can be enabled using Opentelemetry
 
 ### Deploy Grafana
 
@@ -201,4 +202,34 @@ inference_latency or failure count
 - Istio sidecar proxies (Envoy) are automatically injected into pods to Encrypt pod-to-pod traffic
 - Kiali dashboard visualises the realtime traffic between the pods,namespaces..etc.
 
-TLS, Ingress, scaling, and versioning integrated.
+
+### Additionally added the ingress.yaml below, It provisions the certificates automatically with Cert-Manager
+
+```bash
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ml-app-ingress
+  namespace: ml-app
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    nginx.ingress.kubernetes.io/wallarm-mode: "monitoring"
+    nginx.ingress.kubernetes.io/wallarm-application: "14"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - ml-app.myapp.com
+      secretName: ml-app-tls
+  rules:
+    - host: ml-app.myapp.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ml-app-service
+                port:
+                  number: 8000
+```
