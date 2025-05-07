@@ -7,7 +7,7 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 
 - A training pipeline that generates a serialised model and preprocessing pipeline.
 - A FastAPI-based inference microservice.
-- Kubernetes deployment with CI/CD.
+- Kubernetes deployment with CI/CD into GKE cluster.
 - Observability with Prometheus and Loki.
 
 ---
