@@ -116,7 +116,7 @@ Snippet
 - FastAPI for async support and auto-generated Swagger docs.
 - Built-in /health and /metrics endpoints.
 
-Snippet
+Snippet:
 
 ![alt text](image-2.png)
 
