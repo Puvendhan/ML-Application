@@ -13,7 +13,6 @@ def test_predict_logic():
     input_data = main.IrisInput(sepal_length=5.1, sepal_width=3.5,
                                 petal_length=1.4, petal_width=0.2)
     
-    # Manually inject the model dependency (FastAPI won't do it in direct call)
     response = main.predict(input_data, model=mock_pipeline)
 
     assert response["prediction"] == 1
