@@ -83,12 +83,18 @@ spec:
 ```
 
 
+
+
 Snippet: Runner Status in the Github 
 ![alt text](image-5.png)
 
 
+
+
 Snippet: Runner pods in GKE
 ![alt text](image-6.png)
+
+
 
 
 Snippet: ML App pods in the GKE
