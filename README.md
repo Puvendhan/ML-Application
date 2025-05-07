@@ -187,7 +187,7 @@ helm install grafana grafana/grafana \
 - This enables version control, automated deployment rollbacks, and auditability.
 - ArgoRollouts to implement progressive delivery strategies like Canary deployments & Blue-green deployments
 
-### Blog - https://github.com/Puvendhan/gitops
+### GitOps Blog - https://github.com/Puvendhan/gitops
 - Explains deploying the Argo rollouts with Canary & Blue-green strategies
 - Keda (AutoScaling based on events)
 - ML workloads often need to scale based on Request rate (e.g., spike in /predict calls)
