@@ -50,7 +50,12 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 ### ✅ Recommended: GitHub Actions (`ml-train.yml`)
 - Automatically trains the model on push/dispatch.
 - Serialises the `Pipeline` object with preprocessing + model.
-- Uploads to a remote artifact store (e.g., Google Cloud Storage or GitHub release).
+- Uploads to a remote artifact store GCS bucket ml-models-iris.
+
+Snippet: GCS Bucket
+
+![image](https://github.com/user-attachments/assets/6bfa8378-6a10-473e-a68d-310482141939)
+
 
 ## 2️⃣ How to Build and Run the Microservice
 
