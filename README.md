@@ -1,4 +1,10 @@
-# Ml App - Iris Classifier
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Puvendhan/ml-app/main/assets/logo.png" alt="ML App Logo" width="200"/>
+</p>
+
+# ML App - Iris Classifier
+A containerized ML microservice to classify Iris species using FastAPI, Kubernetes, and CI/CD pipelines.
+[🔗 GitHub Repository](https://github.com/Puvendhan/ml-app)
 
 This project demonstrates how to train, package, deploy, and observe a simple Scikit-learn ML model using best practice in MLOps. It includes:
 
@@ -61,7 +67,8 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 ✅ CI/CD is fully automated from code commit to live deployment.
 
 Snippet
-![alt text](image-3.png)
+
+![alt text](image-4.png)
 
 ## 3️⃣ How to Test the Microservice
 🔁 Port-forward
@@ -77,10 +84,11 @@ curl -X POST http://localhost:8000/predict \
 ```
 
 Snippet
+
 ![alt text](image-1.png)
 
 
-## 4️⃣ Design Decisions & Rationale
+## 4️⃣ Design
 ### 🔁 Consistent Training and Inference
 
 ### ⚡ FastAPI Microservice
@@ -88,6 +96,7 @@ Snippet
 - Built-in /health and /metrics endpoints.
 
 Snippet
+
 ![alt text](image-2.png)
 
 ### 🧪 CI/CD
@@ -108,7 +117,7 @@ Deployed the Prometheus into GKE cluster and added the scrape config for the ml 
       - targets: ['ml-api-service.ml-app.svc.cluster.local:80']
 ```
 
-## Accessing the Prometheus endpoint using port-forward and it listens on localhost:9090
+### Accessing the Prometheus endpoint using port-forward and it listens on localhost:9090
 
 ```bash
 kubectl port-forward -n prometheus svc/prometheus-server 9090:80 
@@ -120,7 +129,7 @@ Snippet
 Loki + Promtail for structured logging of every request.
 
 
-## Deploy Promtail
+### Deploy Promtail
 Promtail is an agent which collects the logs,runs as a DaemonSet 
 Pushes logs to Loki using HTTP.
 
@@ -149,9 +158,9 @@ helm install grafana grafana/grafana \
 ```
 
 
-### ✅ Recommendations
+## ✅ Recommendations
 
-🔄 GitOps - ArgoCD
+### 🔄 GitOps - ArgoCD
 - Adopt a GitOps workflow to manage your Kubernetes infrastructure declaratively.
 - This enables version control, automated deployment rollbacks, and auditability.
 - ArgoRollouts to implement progressive delivery strategies like Canary deployments & Blue-green deployments
@@ -167,7 +176,7 @@ http_requests_total on /predict
 inference_latency or failure count
 ```
 
-🔐 Istio (Service Mesh for Zero Trust and MTLS)
+### 🔐 Istio (Service Mesh for Zero Trust and MTLS)
 - Manages the secure communication between the pods using mutual TLS (mTLS). Istio injects a sidecar proxy container in each workload.
 - Istio sidecar proxies (Envoy) are automatically injected into pods to Encrypt pod-to-pod traffic
 - Kiali dashboard visualises the realtime traffic between the pods,namespaces..etc.
