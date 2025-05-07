@@ -63,6 +63,8 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 
 ## ✅ CI/CD is fully automated from code commit to live deployment.
 
+Action Runners
+
 ```bash
 apiVersion: actions.summerwind.dev/v1alpha1
 kind: RunnerDeployment
@@ -80,15 +82,16 @@ spec:
     repository: Puvendhan/ml-app
 ```
 
-Snippet
 
+Snippet: Runner Status in the Github 
 ![alt text](image-5.png)
 
+
+Snippet: Runner pods in GKE
 ![alt text](image-6.png)
 
 
-Snippet
-
+Snippet: ML App pods in the GKE
 ![alt text](image-4.png)
 
 ## 3️⃣ How to Test the Microservice
