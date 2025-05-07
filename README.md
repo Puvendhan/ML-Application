@@ -52,15 +52,15 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 ## 2️⃣ How to Build and Run the Inference Microservice
 
 ### 🔧 CI/CD via GitHub Actions
-ml-app-ci.yml: Runs tests, builds the Docker image, and pushes to a GCR (google container registry).
+- ml-app-ci.yml: Runs tests, builds the Docker image, and pushes to a GCR (google container registry).
 
-ml-deploy.yml: Deploys Kubernetes manifests (Helm based) of the ml app into your gke cluster.
+- ml-deploy.yml: Deploys Kubernetes manifests (Helm based) of the ml app into your gke cluster.
 
 ✅ CI/CD is fully automated from code commit to live deployment.
 
 
 ## 3️⃣ How to Test the Microservice
-🔁 Port-forward (local cluster)
+🔁 Port-forward
 
 ```bash
 kubectl port-forward svc/ml-api-service 8000:80 -n ml-app
