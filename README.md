@@ -56,8 +56,12 @@ This project demonstrates how to train, package, deploy, and observe a simple Sc
 
 - ml-deploy.yml: Deploys Kubernetes manifests (Helm based) of the ml app into your gke cluster.
 
+
+
 ✅ CI/CD is fully automated from code commit to live deployment.
 
+Snippet
+![alt text](image-3.png)
 
 ## 3️⃣ How to Test the Microservice
 🔁 Port-forward
@@ -91,8 +95,9 @@ Snippet
 
 - Separation of pipelines (ml-train.yml, ml-app-ci.yml, ml-deploy.yml) for maintainability.
 
-### 📊 Observability
-Prometheus-compatible metrics via prometheus_fastapi_instrumentator.
+## 📊 Observability
+
+### Prometheus-compatible metrics via prometheus_fastapi_instrumentator.
 
 Deployed the Prometheus into GKE cluster and added the scrape config for the ml app
 
@@ -150,6 +155,17 @@ helm install grafana grafana/grafana \
 - Adopt a GitOps workflow to manage your Kubernetes infrastructure declaratively.
 - This enables version control, automated deployment rollbacks, and auditability.
 - ArgoRollouts to implement progressive delivery strategies like Canary deployments & Blue-green deployments
+
+### Blog - https://github.com/Puvendhan/gitops
+- Explains deploying the Argo rollouts with Canary & Blue-green strategies
+- Keda (AutoScaling based on events)
+- ML workloads often need to scale based on Request rate (e.g., spike in /predict calls)
+- If /predict endpoint exceeds 100 requests/min, scale up.
+-  Based on Prometheus metrics like:
+```bash
+http_requests_total on /predict
+inference_latency or failure count
+```
 
 🔐 Istio (Service Mesh for Zero Trust and MTLS)
 - Manages the secure communication between the pods using mutual TLS (mTLS). Istio injects a sidecar proxy container in each workload.
