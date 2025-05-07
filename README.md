@@ -1,9 +1,6 @@
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Puvendhan/ml-app/main/assets/logo.png" alt="ML App Logo" width="200"/>
-</p>
-
-# ML App - Iris Classifier
+# 🚀 ML App - Iris Classifier
 A containerized ML microservice to classify Iris species using FastAPI, Kubernetes, and CI/CD pipelines.
+
 [🔗 GitHub Repository](https://github.com/Puvendhan/ml-app)
 
 This project demonstrates how to train, package, deploy, and observe a simple Scikit-learn ML model using best practice in MLOps. It includes:
