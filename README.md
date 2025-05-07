@@ -72,18 +72,24 @@ curl -X POST http://localhost:8000/predict \
   -d '{"sepal_length": 5.1, "sepal_width": 3.5, "petal_length": 1.4, "petal_width": 0.2}'
 ```
 
+Snippet
+![alt text](image-1.png)
+
+
 ## 4️⃣ Design Decisions & Rationale
 ### 🔁 Consistent Training and Inference
 
-⚡ FastAPI Microservice
-FastAPI for async support and auto-generated Swagger docs.
+### ⚡ FastAPI Microservice
+- FastAPI for async support and auto-generated Swagger docs.
+- Built-in /health and /metrics endpoints.
 
-Built-in /health and /metrics endpoints.
+Snippet
+![alt text](image-2.png)
 
 ### 🧪 CI/CD
-GitHub Actions automate training, testing, building, and deployment.
+- GitHub Actions automate training, testing, building, and deployment.
 
-Separation of pipelines (ml-train.yml, ml-app-ci.yml, ml-deploy.yml) for maintainability.
+- Separation of pipelines (ml-train.yml, ml-app-ci.yml, ml-deploy.yml) for maintainability.
 
 ### 📊 Observability
 Prometheus-compatible metrics via prometheus_fastapi_instrumentator.
@@ -113,7 +119,7 @@ Loki + Promtail for structured logging of every request.
 Promtail is an agent which collects the logs,runs as a DaemonSet 
 Pushes logs to Loki using HTTP.
 
-## Deploy Loki which collects, stores, and queries logs.
+### Deploy Loki which collects, stores, and queries logs.
 - Stores logs in object storage GCS which can be updated in the ConfigMap.
 - Loki helm chart to deploy in K8s cluster
 
@@ -122,7 +128,7 @@ helm repo add grafana https://grafana.github.io/helm-charts
 helm install --values values.yaml loki grafana/loki
 ```
 
-## Deploy Grafana
+### Deploy Grafana
 
 - Grafana dashboards for real-time monitoring and logging.
 - Add the Data Sources for the Prometheus and Loki
